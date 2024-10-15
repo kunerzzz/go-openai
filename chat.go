@@ -207,6 +207,7 @@ type ChatCompletionRequest struct {
 	MaxCompletionTokens int                           `json:"max_completion_tokens,omitempty"`
 	Temperature         float32                       `json:"temperature,omitempty"`
 	TopP                float32                       `json:"top_p,omitempty"`
+	TopK                float32                       `json:"top_k,omitempty"`
 	N                   int                           `json:"n,omitempty"`
 	Stream              bool                          `json:"stream,omitempty"`
 	Stop                []string                      `json:"stop,omitempty"`
@@ -226,6 +227,7 @@ type ChatCompletionRequest struct {
 	// token position, each with an associated log probability.
 	// logprobs must be set to true if this parameter is used.
 	TopLogProbs int    `json:"top_logprobs,omitempty"`
+	DoSample    bool   `json:"do_sample,omitempty"`
 	User        string `json:"user,omitempty"`
 	// Deprecated: use Tools instead.
 	Functions []FunctionDefinition `json:"functions,omitempty"`
