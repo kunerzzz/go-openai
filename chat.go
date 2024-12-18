@@ -240,6 +240,7 @@ type ChatCompletionRequest struct {
 	StreamOptions *StreamOptions `json:"stream_options,omitempty"`
 	// Disable the default behavior of parallel tool calls by setting it: false.
 	ParallelToolCalls any `json:"parallel_tool_calls,omitempty"`
+	ReasoningEffort string `json:"reasoning_effort,omitempty"`
 }
 
 type StreamOptions struct {
