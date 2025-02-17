@@ -80,10 +80,11 @@ type ChatMessagePart struct {
 }
 
 type ChatCompletionMessage struct {
-	Role         string `json:"role"`
-	Content      string `json:"content"`
-	Refusal      string `json:"refusal,omitempty"`
-	MultiContent []ChatMessagePart
+	Role             string `json:"role"`
+	Content          string `json:"content"`
+	ReasoningContent string `json:"reasoning_content,omitempty"`
+	Refusal          string `json:"refusal,omitempty"`
+	MultiContent     []ChatMessagePart
 
 	// This property isn't in the official documentation, but it's in
 	// the documentation for the official library for python:
@@ -106,41 +107,44 @@ func (m ChatCompletionMessage) MarshalJSON() ([]byte, error) {
 	}
 	if len(m.MultiContent) > 0 {
 		msg := struct {
-			Role         string            `json:"role"`
-			Content      string            `json:"-"`
-			Refusal      string            `json:"refusal,omitempty"`
-			MultiContent []ChatMessagePart `json:"content,omitempty"`
-			Name         string            `json:"name,omitempty"`
-			FunctionCall *FunctionCall     `json:"function_call,omitempty"`
-			ToolCalls    []ToolCall        `json:"tool_calls,omitempty"`
-			ToolCallID   string            `json:"tool_call_id,omitempty"`
+			Role             string            `json:"role"`
+			Content          string            `json:"-"`
+			ReasoningContent string            `json:"reasoning_content,omitempty"`
+			Refusal          string            `json:"refusal,omitempty"`
+			MultiContent     []ChatMessagePart `json:"content,omitempty"`
+			Name             string            `json:"name,omitempty"`
+			FunctionCall     *FunctionCall     `json:"function_call,omitempty"`
+			ToolCalls        []ToolCall        `json:"tool_calls,omitempty"`
+			ToolCallID       string            `json:"tool_call_id,omitempty"`
 		}(m)
 		return json.Marshal(msg)
 	}
 
 	msg := struct {
-		Role         string            `json:"role"`
-		Content      string            `json:"content"`
-		Refusal      string            `json:"refusal,omitempty"`
-		MultiContent []ChatMessagePart `json:"-"`
-		Name         string            `json:"name,omitempty"`
-		FunctionCall *FunctionCall     `json:"function_call,omitempty"`
-		ToolCalls    []ToolCall        `json:"tool_calls,omitempty"`
-		ToolCallID   string            `json:"tool_call_id,omitempty"`
+		Role             string            `json:"role"`
+		Content          string            `json:"content"`
+		ReasoningContent string            `json:"reasoning_content,omitempty"`
+		Refusal          string            `json:"refusal,omitempty"`
+		MultiContent     []ChatMessagePart `json:"-"`
+		Name             string            `json:"name,omitempty"`
+		FunctionCall     *FunctionCall     `json:"function_call,omitempty"`
+		ToolCalls        []ToolCall        `json:"tool_calls,omitempty"`
+		ToolCallID       string            `json:"tool_call_id,omitempty"`
 	}(m)
 	return json.Marshal(msg)
 }
 
 func (m *ChatCompletionMessage) UnmarshalJSON(bs []byte) error {
 	msg := struct {
-		Role         string `json:"role"`
-		Content      string `json:"content"`
-		Refusal      string `json:"refusal,omitempty"`
-		MultiContent []ChatMessagePart
-		Name         string        `json:"name,omitempty"`
-		FunctionCall *FunctionCall `json:"function_call,omitempty"`
-		ToolCalls    []ToolCall    `json:"tool_calls,omitempty"`
-		ToolCallID   string        `json:"tool_call_id,omitempty"`
+		Role             string            `json:"role"`
+		Content          string            `json:"content"`
+		ReasoningContent string            `json:"reasoning_content,omitempty"`
+		Refusal          string            `json:"refusal,omitempty"`
+		MultiContent     []ChatMessagePart `json:"-"`
+		Name             string            `json:"name,omitempty"`
+		FunctionCall     *FunctionCall     `json:"function_call,omitempty"`
+		ToolCalls        []ToolCall        `json:"tool_calls,omitempty"`
+		ToolCallID       string            `json:"tool_call_id,omitempty"`
 	}{}
 
 	if err := json.Unmarshal(bs, &msg); err == nil {
@@ -148,14 +152,15 @@ func (m *ChatCompletionMessage) UnmarshalJSON(bs []byte) error {
 		return nil
 	}
 	multiMsg := struct {
-		Role         string `json:"role"`
-		Content      string
-		Refusal      string            `json:"refusal,omitempty"`
-		MultiContent []ChatMessagePart `json:"content"`
-		Name         string            `json:"name,omitempty"`
-		FunctionCall *FunctionCall     `json:"function_call,omitempty"`
-		ToolCalls    []ToolCall        `json:"tool_calls,omitempty"`
-		ToolCallID   string            `json:"tool_call_id,omitempty"`
+		Role             string `json:"role"`
+		Content          string
+		ReasoningContent string            `json:"reasoning_content,omitempty"`
+		Refusal          string            `json:"refusal,omitempty"`
+		MultiContent     []ChatMessagePart `json:"content"`
+		Name             string            `json:"name,omitempty"`
+		FunctionCall     *FunctionCall     `json:"function_call,omitempty"`
+		ToolCalls        []ToolCall        `json:"tool_calls,omitempty"`
+		ToolCallID       string            `json:"tool_call_id,omitempty"`
 	}{}
 	if err := json.Unmarshal(bs, &multiMsg); err != nil {
 		return err
@@ -205,7 +210,7 @@ type ChatCompletionRequest struct {
 	// Deprecated: use MaxCompletionTokens instead.
 	MaxTokens           int                           `json:"max_tokens,omitempty"`
 	MaxCompletionTokens int                           `json:"max_completion_tokens,omitempty"`
-	Temperature         *float32                       `json:"temperature,omitempty"`
+	Temperature         *float32                      `json:"temperature,omitempty"`
 	TopP                float32                       `json:"top_p,omitempty"`
 	TopK                int                           `json:"top_k,omitempty"`
 	N                   int                           `json:"n,omitempty"`
@@ -239,8 +244,8 @@ type ChatCompletionRequest struct {
 	// Options for streaming response. Only set this when you set stream: true.
 	StreamOptions *StreamOptions `json:"stream_options,omitempty"`
 	// Disable the default behavior of parallel tool calls by setting it: false.
-	ParallelToolCalls any `json:"parallel_tool_calls,omitempty"`
-	ReasoningEffort string `json:"reasoning_effort,omitempty"`
+	ParallelToolCalls any    `json:"parallel_tool_calls,omitempty"`
+	ReasoningEffort   string `json:"reasoning_effort,omitempty"`
 }
 
 type StreamOptions struct {
