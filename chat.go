@@ -244,8 +244,14 @@ type ChatCompletionRequest struct {
 	// Options for streaming response. Only set this when you set stream: true.
 	StreamOptions *StreamOptions `json:"stream_options,omitempty"`
 	// Disable the default behavior of parallel tool calls by setting it: false.
-	ParallelToolCalls any    `json:"parallel_tool_calls,omitempty"`
-	ReasoningEffort   string `json:"reasoning_effort,omitempty"`
+	ParallelToolCalls any             `json:"parallel_tool_calls,omitempty"`
+	ReasoningEffort   string          `json:"reasoning_effort,omitempty"`
+	Thinking          *ThinkingConfig `json:"thinking,omitempty"`
+}
+
+type ThinkingConfig struct {
+	BudgetTokens    *int  `json:"budget_tokens,omitempty"`
+	IncludeThoughts *bool `json:"include_thoughts,omitempty"`
 }
 
 type StreamOptions struct {
