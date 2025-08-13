@@ -235,7 +235,7 @@ type ChatCompletionRequest struct {
 	DoSample    bool   `json:"do_sample,omitempty"`
 	User        string `json:"user,omitempty"`
 	// Deprecated: use Tools instead.
-	Functions json.RawMessage `json:"functions,omitempty"`
+	Functions []FunctionDefinition `json:"functions,omitempty"`
 	// Deprecated: use ToolChoice instead.
 	FunctionCall json.RawMessage `json:"function_call,omitempty"`
 	Tools        json.RawMessage `json:"tools,omitempty"`
