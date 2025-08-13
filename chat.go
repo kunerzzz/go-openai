@@ -192,15 +192,15 @@ const (
 )
 
 type ChatCompletionResponseFormat struct {
-	Type       ChatCompletionResponseFormatType        `json:"type,omitempty"`
-	JSONSchema *ChatCompletionResponseFormatJSONSchema `json:"json_schema,omitempty"`
+	Type       ChatCompletionResponseFormatType `json:"type,omitempty"`
+	JSONSchema json.RawMessage                  `json:"json_schema,omitempty"`
 }
 
 type ChatCompletionResponseFormatJSONSchema struct {
-	Name        string         `json:"name"`
-	Description string         `json:"description,omitempty"`
-	Schema      json.Marshaler `json:"schema"`
-	Strict      bool           `json:"strict"`
+	Name        string          `json:"name"`
+	Description string          `json:"description,omitempty"`
+	Schema      json.RawMessage `json:"schema"`
+	Strict      bool            `json:"strict"`
 }
 
 // ChatCompletionRequest represents a request structure for chat completion API.
@@ -235,10 +235,10 @@ type ChatCompletionRequest struct {
 	DoSample    bool   `json:"do_sample,omitempty"`
 	User        string `json:"user,omitempty"`
 	// Deprecated: use Tools instead.
-	Functions []FunctionDefinition `json:"functions,omitempty"`
+	Functions json.RawMessage `json:"functions,omitempty"`
 	// Deprecated: use ToolChoice instead.
-	FunctionCall any    `json:"function_call,omitempty"`
-	Tools        []Tool `json:"tools,omitempty"`
+	FunctionCall json.RawMessage `json:"function_call,omitempty"`
+	Tools        json.RawMessage `json:"tools,omitempty"`
 	// This can be either a string or an ToolChoice object.
 	ToolChoice any `json:"tool_choice,omitempty"`
 	// Options for streaming response. Only set this when you set stream: true.
