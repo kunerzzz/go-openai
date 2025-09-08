@@ -247,6 +247,7 @@ type ChatCompletionRequest struct {
 	ParallelToolCalls any             `json:"parallel_tool_calls,omitempty"`
 	ReasoningEffort   string          `json:"reasoning_effort,omitempty"`
 	Thinking          *ThinkingConfig `json:"thinking,omitempty"`
+	Verbosity         string          `json:"verbosity,omitempty"`
 }
 
 type ThinkingConfig struct {
